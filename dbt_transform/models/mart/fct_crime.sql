@@ -1,3 +1,10 @@
+{{
+  config(
+    materialized='incremental',
+    unique_key='report_id'
+  )
+}}
+
 select
     crime.report_id,
     -- report info

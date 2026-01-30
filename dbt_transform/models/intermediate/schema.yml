@@ -1,0 +1,52 @@
+models:
+  - name: int_cleaned_and_enrich
+    description: cleaned, enriched, and deduplicated crime data ready for marts
+    columns:
+    - name: report_id
+      description: Surrogate key generated from report_code, report_date, occur_date, occur_time, latitude, and longitude
+    - name: report_code
+      description: Unique identifier assigned to each criminal report
+    - name: report_date
+      description: Date when the crime was reported to law enforcement (not the occurrence date)
+    - name: occur_date
+      description: Actual date when the crime occurred
+    - name: occur_time
+      description: Time of day when the crime occurred (HHMMSS format)
+    - name: area_code
+      description: LAPD area code indicating the geographic area where the crime occurred
+    - name: reporting_district_number
+      description: Reporting district number within the LAPD area where the crime occurred
+    - name: crime_part
+      description: Classification of the crime based on LAPD crime severity grouping
+    - name: lapd_crime_code
+      description: Official LAPD crime code identifying the reported offense
+    - name: mo_codes
+      description: Modus operandi codes describing how the crime was committed
+    - name: victim_age
+      description: Age of the victim at the time of the crime
+    - name: victim_gender
+      description: Gender of the victim
+    - name: victim_descent
+      description: Descent or ethnicity classification of the victim
+    - name: premis_code
+      description: Code identifying the type of premises where the crime occurred
+    - name: weapon_code
+      description: Code identifying the weapon used in the crime, if applicable
+    - name: primary_crime_code
+      description: Primary crime code representing the main offense
+    - name: secondary_crime_code_1
+      description: First secondary crime code associated with the incident
+    - name: secondary_crime_code_2
+      description: Second secondary crime code associated with the incident
+    - name: secondary_crime_code_3
+      description: Third secondary crime code associated with the incident
+    - name: address
+      description: Street address where the crime occurred
+    - name: cross_street
+      description: Nearest cross street to the crime location
+    - name: latitude
+      description: Latitude coordinate of the crime location
+    - name: longitude
+      description: Longitude coordinate of the crime location
+    - name: rn
+      description: Row number used for deduplication or record ordering

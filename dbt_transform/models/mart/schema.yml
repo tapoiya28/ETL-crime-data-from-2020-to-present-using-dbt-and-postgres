@@ -1,0 +1,151 @@
+version: 2
+
+models:
+  - name: fct_crime_report
+    description: >
+      Fact table containing enriched crime reports with area, crime classification,
+      victim information, case status, and location details.
+    columns:
+      - name: report_id
+        description: Surrogate key uniquely identifying a crime report
+        tests:
+          - not_null
+          - unique
+      - name: report_code
+        description: Original unique code assigned to the crime report
+      - name: report_date
+        description: Date the crime was reported to LAPD
+      - name: occur_date
+        description: Actual date the crime occurred
+      - name: occur_time
+        description: Time when the crime occurred
+      - name: area_code
+        description: LAPD area code where the crime occurred
+        tests:
+          - relationships:
+              to: ref('dim_area')
+              field: area_code
+      - name: area_name
+        description: Name of the LAPD area where the crime occurred
+      - name: reporting_district_number
+        description: Reporting district number within the LAPD area
+      - name: crime_part
+        description: LAPD crime severity classification (Part I / Part II)
+      - name: crime_serverity
+        description: Derived crime severity level based on crime_part
+      - name: lapd_crime_code
+        description: LAPD crime code identifying the offense
+        tests:
+          - relationships:
+              to: ref('dim_lapd_crime')
+              field: lapd_crime_code
+      - name: lapd_crime_code_description
+        description: Text description of the LAPD crime code
+      - name: mo_codes
+        description: Modus operandi codes describing how the crime was committed
+      - name: victim_age
+        description: Age of the victim at the time of the crime
+      - name: age_group
+        description: Derived age group bucket for the victim
+      - name: victim_gender
+        description: Standardized gender of the victim
+      - name: victim_descent
+        description: Code representing the victim’s descent or ethnicity
+      - name: description
+        description: Description of the victim descent code
+      - name: premis_code
+        description: Code identifying the type of premises where the crime occurred
+        tests:
+          - relationships:
+              to: ref('dim_premis')
+              field: premis_code
+      - name: premis_description
+        description: Description of the premises type
+      - name: weapon_code
+        description: Code identifying the weapon used in the crime
+        tests:
+          - relationships:
+              to: ref('dim_weapon')
+              field: weapon_code
+      - name: weapon_description
+        description: Description of the weapon used
+      - name: case_status
+        description: Code representing the case status
+        tests:
+          - relationships:
+              to: ref('dim_status')
+              field: case_status
+      - name: case_status_description
+        description: Description of the case status
+      - name: primary_crime_code
+        description: Primary crime code representing the main offense
+      - name: secondary_crime_code_1
+        description: First secondary crime code associated with the incident
+      - name: secondary_crime_code_2
+        description: Second secondary crime code associated with the incident
+      - name: secondary_crime_code_3
+        description: Third secondary crime code associated with the incident
+      - name: address
+        description: Street address where the crime occurred
+      - name: cross_street
+        description: Nearest cross street to the crime location
+      - name: latitude
+        description: Latitude coordinate of the crime location
+      - name: longitude
+        description: Longitude coordinate of the crime location
+
+  - name: dim_area
+    description: Dimension table containing LAPD area codes and names.
+    columns:
+      - name: area_code
+        description: LAPD area code identifying the geographic area.
+        tests:
+          - not_null
+          - unique
+      - name: area_name
+        description: Name of the LAPD geographic area.
+
+  - name: dim_lapd_crime
+    description: Dimension table containing LAPD crime codes and descriptions.
+    columns:
+      - name: lapd_crime_code
+        description: Official LAPD crime code.
+        tests:
+          - not_null
+          - unique
+      - name: lapd_crime_code_description
+        description: Text description of the LAPD crime code.
+
+  - name: dim_premis
+    description: Dimension table describing premises where crimes occurred.
+    columns:
+      - name: premis_code
+        description: Code identifying the type of premises.
+        tests:
+          - not_null
+          - unique
+      - name: premis_description
+        description: Description of the premises type.
+
+  - name: dim_status
+    description: Dimension table describing crime case statuses.
+    columns:
+      - name: case_status
+        description: Code representing the case status.
+        tests:
+          - not_null
+          - unique
+      - name: case_status_description
+        description: Description of the case status.
+        
+  - name: dim_weapon
+    description: Dimension table describing weapons used in crimes.
+    columns:
+      - name: weapon_code
+        description: Code identifying the weapon used.
+        tests:
+          - not_null
+          - unique
+      - name: weapon_description
+        description: Description of the weapon.
+
