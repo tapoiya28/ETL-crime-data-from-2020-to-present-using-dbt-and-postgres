@@ -12,6 +12,7 @@ select
     crime.report_date,
     crime.occur_date,
     crime.occur_time,
+    crime.report_delay_days,
 
     -- area info
     crime.area_code,
@@ -65,3 +66,7 @@ left join {{ ref('dim_weapon') }} as weapon
     on crime.weapon_code = weapon.weapon_code
 left join {{ ref('descent_lookup') }} d
     on crime.victim_descent = d.code
+
+{% if is_incremental() %}
+  where crime.report_date > (select max(report_date) from {{ this }})
+{% endif %}

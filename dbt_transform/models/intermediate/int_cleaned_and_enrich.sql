@@ -12,14 +12,16 @@ with crime_data as (
         report_date,
         occur_date,
         make_time(occur_time / 100, occur_time % 100, 0) as occur_time,
+        report_date::DATE - occur_date::DATE as report_delay_days,
 
         -- area info
-        area_code,
+
+        {{ dbt_utils.dbt_utils.generate_surrogate_key(area_code) }} as area_key,
         reporting_district_number,
     
         -- category crime
         crime_part,
-        lapd_crime_code,
+        {{ dbt_utils.dbt_utils.generate_surrogate_key(lapd_crime_code) }} as lapd_crime_key,
         mo_codes,
 
         -- victim info
@@ -28,15 +30,16 @@ with crime_data as (
         victim_descent,
         
         -- case detail
-        premis_code,
-        weapon_code,
-        case_status,
+        {{ dbt_utils.dbt_utils.generate_surrogate_key(premis_code) }} as premis_key,
+        {{ dbt_utils.dbt_utils.generate_surrogate_key(weapon_code) }} as weapon_key,
+        {{ dbt_utils.dbt_utils.generate_surrogate_key(case_status) }} as case_status_key,
 
         primary_crime_code,
         secondary_crime_code_1,
         secondary_crime_code_2,
         secondary_crime_code_3,
 
+        -- location
         address,
         cross_street,
         latitude,

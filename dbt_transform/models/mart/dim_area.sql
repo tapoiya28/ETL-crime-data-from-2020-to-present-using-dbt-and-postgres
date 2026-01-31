@@ -3,7 +3,8 @@ with crime_data as (
 )
 
 select 
-    area_code
+    {{ dbt_utils.dbt_utils.generate_surrogate_key(area_code) }} as area_key,
+    area_code,
     max(area_name) as area_name
 from crime_data
 where area_code is not null
