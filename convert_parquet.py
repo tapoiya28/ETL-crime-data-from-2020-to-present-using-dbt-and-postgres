@@ -37,7 +37,7 @@ DTYPE_MAP = {
     "LON": "float64",
 }
 
-engine = create_engine("postgresql://postgres:admin@localhost:5432/crime_pipeline")
+engine = create_engine("postgresql://root:root@localhost:5433/crime_pipeline")
 
 def ingest_data(filename: str):
     try:
